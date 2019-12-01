@@ -27,8 +27,7 @@ public class Astar
 
     public List<Node> Search(Node start, Node goal)
     {
-        // 1. dist[s] = 0
-        // 2. set all other distances to infinity
+        // Distances of the node set to the infinity
         List<Node> nodes = map.GetAllNodes();
         foreach (Node node in nodes)
         {
@@ -38,9 +37,9 @@ public class Astar
         distanceDict[start] = 0;
         actualDistanceDict[start] = 0;
 
-        // 3. Initialize S(visited) and Q(unvisited)
-        //    S, the set of visited nodes is initially empty
-        //    Q, the queue initially conatains all nodes
+        // Initialize visited and unvisited
+        // Visited nodes are empty
+        // Unvisited nodes should store all the nodes from the map
         visited.Clear();
         unvisited.Clear();
         foreach (Node n in map.GetAllNodes())
@@ -48,17 +47,18 @@ public class Astar
             unvisited.Add(n);
         }
 
-        predecessorDict.Clear(); // to generate the result path
+        // Make sure to empty to generate path
+        predecessorDict.Clear(); 
 
         while (unvisited.Count > 0)
         {
-            // 4. select element of Q with the minimum distance
+            // unvisited nodes to generate shortest path
             Node u = GetClosestFromUnvisited();
 
             // Check if the node u is the goal.            
             if (u == goal) break;
 
-            // 5. add u to list of S(visited)            
+            // Add to the visited             
             visited.Add(u);
 
             foreach (Node v in map.GetNeighbors(u))
@@ -66,7 +66,7 @@ public class Astar
                 if (visited.Contains(v))
                     continue;
 
-                // 6. If new shortest path found then set new value of shortest path                
+                // If new shortest path found then set new value of shortest path                
                 if (distanceDict[v] > actualDistanceDict[u] + map.GetNeighborDistance(u, v) + map.GetEstimatedDistance(v, goal))
                 {
                     distanceDict[v] = actualDistanceDict[u] + map.GetNeighborDistance(u, v) + map.GetEstimatedDistance(v, goal);
@@ -75,8 +75,7 @@ public class Astar
                 if (actualDistanceDict[v] > actualDistanceDict[u] + map.GetNeighborDistance(u, v))
                 {
                     actualDistanceDict[v] = actualDistanceDict[u] + map.GetNeighborDistance(u, v);
-                    // update predecessorDict to build the result path
-                    predecessorDict[v] = u;
+                    predecessorDict[v] = u; // update predecessorDict to build the result path
                 }
             }
         }

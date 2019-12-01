@@ -5,7 +5,6 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     public Tilemaps map;
-    public float speed = 5;
 
     Astar aStarPathfinder = new Astar();
     public enum State { MOVE, IDLE };
@@ -52,30 +51,39 @@ public class Character : MonoBehaviour
     }
 
     IEnumerator SearchPathAndMove(Node target)
-    {
-        Vector3 pos = transform.position;
-        Node start = map.GetNode(Mathf.FloorToInt(pos.x + 0.5f), Mathf.FloorToInt(pos.y + 0.5f));
-
-        // Get the shortest path between start and target using astar algorithm
-        List<Node> path = aStarPathfinder.Search(start, target);
-        pathDisplay = path;
-
-        foreach (Node n in path)
         {
-            Vector3 nextPos = new Vector3(n.x, n.y, 0);
-            Vector3 dir = nextPos - transform.position;
-            Vector3 moved = Vector3.zero;
-            while (dir.magnitude > moved.magnitude)
+            // To do: Find out a start node. The start node is the node where the character stands
+            // Node start = ?
+            Vector3 pos = transform.position;
+            Node startNode = map.GetNode(Mathf.FloorToInt(pos.x + 0.5f), Mathf.FloorToInt(pos.y + 0.5f));
+
+            // To do: Get the shortest path between start and target using astar algorithm
+            // List<Node> path = ?
+            List<Node> path = aStarPathfinder.Search(startNode, target);
+            pathDisplay = path;
+            // To do: move the character using the position info in the shortest path
+            // you need to use "yield return new WaitForSeconds(0.5f);" to make a delay between each movement
+            // Refer to https://docs.unity3d.com/Manual/Coroutines.html
+            foreach(Node paths in path)
             {
-                pos += speed * dir.normalized * Time.deltaTime;
-                moved += speed * dir.normalized * Time.deltaTime;
-                transform.position = pos;
-                yield return null;
+                float speed = 10.0f;
+                // At the origin
+                Vector3 visitedPos = Vector3.zero;
+                // A* pathfinding searched position of x, y
+                Vector3 unvisitedPos = new Vector3(paths.x, paths.y, transform.position.z);
+                // Direction Vector track by a* final pos - current pos
+                Vector3 dirVector = unvisitedPos - pos; 
+
+                // While loop iteration till diretion vector is less than visited position; 
+                while(Vector3.Magnitude(dirVector) > Vector3.Magnitude(visitedPos))
+                {
+                    pos += dirVector.normalized * speed * Time.deltaTime;
+                    visitedPos += dirVector.normalized * speed * Time.deltaTime;
+                    transform.position = pos;
+                    //yield return new WaitForSeconds(0.5f);
+                    yield return null;
+                }
             }
-
-            yield return null;
-        }
-
         // set state to IDLE in order to enable next movement
         state = State.IDLE;
     }
