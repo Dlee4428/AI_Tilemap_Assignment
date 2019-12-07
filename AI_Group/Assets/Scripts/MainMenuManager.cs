@@ -7,10 +7,10 @@ public class MainMenuManager : MonoBehaviour
 {
     [Header("Data")]
     [SerializeField] public string mainMenu = "MainMenu";
-    [SerializeField] public string test = "Main";
+    [SerializeField] public string main = "Main";
     public void PlayGame()
     {
-        SceneManager.LoadScene(test);
+        SceneManager.LoadScene(main);
     }
 
     public void ExitGame()
