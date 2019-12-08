@@ -20,6 +20,10 @@ public class EnemyBehaviour : MonoBehaviour
     [Header("Agent Patterns")]
     [SerializeField]
     PerlinNoise idleMove;
+    [SerializeField]
+    Chase chaseMove;
+    [SerializeField]
+    Evade evadeMove;
 
     public float distance;
     [Header("Agent Behaviour")]
@@ -44,11 +48,12 @@ public class EnemyBehaviour : MonoBehaviour
         }
         if(behaviour == Behaviour.CHASING)
         {
+            chaseMove.ChaseMe();
             Debug.Log("Chasing");   //Todo: Generate a tile towards the player
         }
         if(behaviour == Behaviour.EVADING)
         {
-            Debug.Log("Fleeing"); //todo: Generates a tile away from the player
+           evadeMove.Avoid(); //todo: Generates a tile away from the player
         }
 
         CheckDistFromPlayer();
