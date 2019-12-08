@@ -32,7 +32,7 @@ public class Evade : MonoBehaviour
             if (transform.position.x > player.transform.position.x)
             {
                 movement.x = 1;
-
+                node = map.GetNode((int)transform.position.x + (int)movement.x, (int)transform.position.y + (int)movement.y);
                 if (node.tileType == Node.TileType.WALL)
                 {
                     movement.x = 0;
@@ -41,6 +41,7 @@ public class Evade : MonoBehaviour
             if (transform.position.x < player.transform.position.x)
             {
                 movement.x = -1;
+                node = map.GetNode((int)transform.position.x + (int)movement.x, (int)transform.position.y + (int)movement.y);
                 if (node.tileType == Node.TileType.WALL)
                 {
                     movement.x = 0;
@@ -51,6 +52,7 @@ public class Evade : MonoBehaviour
             if (transform.position.y > player.transform.position.y)
             {
                 movement.y = 1;
+                node = map.GetNode((int)transform.position.x + (int)movement.x, (int)transform.position.y + (int)movement.y);
                 if (node.tileType == Node.TileType.WALL)
                 {
                     movement.y = 0;
@@ -60,6 +62,7 @@ public class Evade : MonoBehaviour
             if (transform.position.y < player.transform.position.y)
             {
                 movement.y = -1;
+                node = map.GetNode((int)transform.position.x + (int)movement.x, (int)transform.position.y + (int)movement.y);
                 if (node.tileType == Node.TileType.WALL)
                 {
                     movement.y = 0;
